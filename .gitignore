@@ -1,0 +1,42 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Output of the Go build
+tmp/
+*.log
+
+# Dependency directories (vendor/)
+vendor/
+
+# IDE/editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Go coverage files
+*.coverprofile
+*.cov
+
+# Air live reload
+.air.toml
+
+# Go module files backup
+go.sum
+
+# Ignore build output
+build/
+
+# Ignore environment files
+.env
+.env.*
