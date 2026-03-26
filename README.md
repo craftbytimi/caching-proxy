@@ -3,14 +3,14 @@
 This is the order I’d actually build it in for `Go + stdlib + modular monolith`, keeping the MVP small but clean.
 
 **V1 Scope**
-- Start the proxy from CLI: `caching-proxy --port 3000 --upstream http://example.com --ttl 60`
+- Start the proxy from CLI: `caching-proxy --port 3000 --upstream http://example.com --ttl 60 --redis redis://localhost:6379`
 - Forward requests to one configured upstream.
 - Cache only `GET` requests.
 - Cache only `200 OK` responses.
-- Use in-memory TTL cache only.
+- Use Redis TTL cache as the backend.
 - Return `X-Cache: HIT` or `X-Cache: MISS`.
 - Add `/healthz`.
-- Skip Redis, persistence, `ETag`, `Cache-Control` parsing, and advanced invalidation for v1.
+- Skip file-based persistence, `ETag`, `Cache-Control` parsing, and advanced invalidation for v1.
 
 **Target Package Layout**
 ```text
@@ -46,10 +46,10 @@ internal/observability/logger.go
 - Tasks: implement `internal/upstream/client.go` using `http.Client`; copy request method, path, query, body, and safe headers; strip hop-by-hop headers; return upstream status, headers, and body.
 - Done when: the proxy correctly forwards requests and mirrors upstream responses without caching.
 
-**Phase 5: Implement The Memory Store**
-- Goal: add a safe, testable cache backend.
-- Tasks: build an in-memory store with `map + sync.RWMutex`; store `CachedResponse` with `ExpiresAt`; clone headers/body on read and write; add expiry cleanup on access.
-- Done when: `Get`, `Set`, `Delete`, and `Clear` behave correctly under concurrent access.
+**Phase 5: Implement The Redis Store**
+- Goal: add a safe, testable cache backend using Redis.
+- Tasks: integrate Redis using `github.com/redis/go-redis/v9`; store `CachedResponse` with TTL; serialize/deserialize responses for storage; ensure atomicity for cache operations.
+- Done when: `Get`, `Set`, `Delete`, and `Clear` behave correctly with Redis and TTL is enforced.
 
 **Phase 6: Implement Cache Key And Policy**
 - Goal: centralize all cache decisions in one place.
@@ -84,7 +84,7 @@ internal/observability/logger.go
 **Recommended Build Order**
 1. Boot the app and `/healthz`.
 2. Implement pass-through proxy without cache.
-3. Add memory store.
+3. Add Redis store.
 4. Add cache key/policy.
 5. Wire cache into proxy service.
 6. Add tests.
@@ -95,7 +95,7 @@ internal/observability/logger.go
 - Proxy starts from CLI.
 - Requests forward correctly to upstream.
 - Repeated cacheable `GET` requests return `MISS` then `HIT`.
-- Expired entries are not served.
+- Expired entries are not served (enforced by Redis TTL).
 - Logs clearly show request outcome.
 - Tests pass with `go test ./...`.
 - README explains how to run and verify behavior.
@@ -104,9 +104,21 @@ internal/observability/logger.go
 - LRU eviction in addition to TTL.
 - background cleanup goroutine for expired entries.
 - respect `Cache-Control` and `ETag`.
-- file-based or Redis-backed store.
+- file-based store.
 - singleflight request coalescing to avoid duplicate upstream fetches on concurrent misses.
 - admin endpoint or CLI command to clear cache.
 - metrics endpoint for hit rate and cache size.
+
+**Redis Setup**
+
+You must have a running Redis instance. By default, the app expects Redis at `redis://localhost:6379`. You can override this with the `--redis` flag.
+
+**Example usage:**
+
+```
+caching-proxy --port 3000 --upstream http://example.com --ttl 60 --redis redis://localhost:6379
+```
+
+The cache backend uses Redis for storing cached responses with TTL. Ensure Redis is running before starting the proxy.
 
 If you want, I can turn this next into a concrete task board with exact files, functions, and implementation order for each file.
