@@ -1,56 +1,15 @@
-# Caching Proxy
+# Caching Proxy - Architecture & Development Plan
 
-A production-ready HTTP caching proxy server built with Go, featuring Redis-backed caching, clean architecture, and comprehensive observability.
+> 📚 **Documentation Navigation**
+> - 🏠 [README.md](README.md) - Main documentation hub
+> - ⚡ [QUICKSTART.md](QUICKSTART.md) - 5-minute setup guide
+> - 📊 [PROJECT_STATUS.md](PROJECT_STATUS.md) - Implementation progress
+> - 📦 [SCAFFOLD_SUMMARY.md](SCAFFOLD_SUMMARY.md) - Project scaffold overview
 
-## 📚 Documentation
-
-| Document | Description |
-|----------|-------------|
-| **[QUICKSTART.md](QUICKSTART.md)** | 5-minute setup guide - start here! |
-| **[PROJECT_STATUS.md](PROJECT_STATUS.md)** | Current implementation progress tracker |
-| **[ARCHITECTURE.md](ARCHITECTURE.md)** | Complete architecture & development plan |
-| **[SCAFFOLD_SUMMARY.md](SCAFFOLD_SUMMARY.md)** | Overview of the complete project scaffold |
-| **[docs/api.md](docs/api.md)** | API endpoints and usage documentation |
-| **[docs/deployment.md](docs/deployment.md)** | Deployment and production setup guide |
-| **[docs/performance.md](docs/performance.md)** | Performance tuning and optimization |
-
-## 🚀 Quick Start
-
-New to this project? Start with the [QUICKSTART.md](QUICKSTART.md) guide to get up and running in 5 minutes.
-
-```bash
-# 1. Install dependencies
-make install
-
-# 2. Start Redis
-make redis
-
-# 3. Run the proxy (once implemented)
-make run
-```
-
-For detailed setup instructions, see [QUICKSTART.md](QUICKSTART.md).
-
-## 📊 Project Status
-
-Current Phase: **Phase 2-3 (Core Implementation)**
-
-- ✅ Phase 1: Bootstrap complete
-- ✅ Phase 2: Core architecture and interfaces defined
-- 🔄 Phase 3-4: Configuration and basic proxy (in progress)
-
-See [PROJECT_STATUS.md](PROJECT_STATUS.md) for detailed progress tracking.
-
-## 🏗️ Architecture Overview
-
-This project follows **Clean Architecture** principles with interface-driven design. All major components are defined as interfaces for easy testing and swappable implementations.
-
-For complete architecture details, see [ARCHITECTURE.md](ARCHITECTURE.md).
-
----
+This document contains the complete architecture design and 12-phase development plan for the caching proxy project.
 
 ## Table of Contents
-1. [Architecture Overview](#architecture-overview-1)
+1. [Architecture Overview](#architecture-overview)
 2. [Design Principles](#design-principles)
 3. [Folder Structure](#folder-structure)
 4. [Component Architecture](#component-architecture)
@@ -919,12 +878,14 @@ LOG_LEVEL
 
 ## Next Steps
 
-1. **Review this architecture** with team/stakeholders
-2. **Set up project board** with GitHub Projects or similar
-3. **Create milestone branches** for each phase
-4. **Start Phase 2** - Define all interfaces
-5. **Set up CI/CD** - GitHub Actions for tests and builds
-6. **Weekly reviews** - Track progress, adjust plan
+1. **Get started quickly**: Follow [QUICKSTART.md](QUICKSTART.md)
+2. **Check progress**: See [PROJECT_STATUS.md](PROJECT_STATUS.md) for current phase status
+3. **Review scaffold**: See [SCAFFOLD_SUMMARY.md](SCAFFOLD_SUMMARY.md) for complete file overview
+4. **Set up project board** with GitHub Projects or similar
+5. **Create milestone branches** for each phase
+6. **Continue Phase 3** - Configuration and CLI implementation
+7. **Set up CI/CD** - GitHub Actions for tests and builds
+8. **Weekly reviews** - Track progress, adjust plan
 
 ---
 
@@ -949,19 +910,15 @@ LOG_LEVEL
 
 ---
 
-## 📖 Additional Resources
+## Related Documentation
 
-- **[SCAFFOLD_SUMMARY.md](SCAFFOLD_SUMMARY.md)** - Complete overview of the project structure
-- **[docs/](docs/)** - Detailed documentation for API, deployment, and performance
-- **[test/](test/)** - Integration tests and fixtures
-- **[scripts/](scripts/)** - Development and build scripts
-
-## 🔗 Related Documentation
-
-- [Go HTTP Best Practices](https://golang.org/doc/effective_go)
-- [Redis Go Client Docs](https://redis.uptrace.dev/)
-- [Caching Best Practices](https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching)
-- [HTTP Proxy Design](https://www.rfc-editor.org/rfc/rfc9110.html)
+- **[README.md](README.md)** - Main documentation hub with quick overview
+- **[PROJECT_STATUS.md](PROJECT_STATUS.md)** - Current phase completion status
+- **[QUICKSTART.md](QUICKSTART.md)** - Getting started in 5 minutes
+- **[SCAFFOLD_SUMMARY.md](SCAFFOLD_SUMMARY.md)** - Complete scaffold overview
+- **[docs/api.md](docs/api.md)** - API endpoint documentation
+- **[docs/deployment.md](docs/deployment.md)** - Deployment guide
+- **[docs/performance.md](docs/performance.md)** - Performance optimization
 
 ---
 
