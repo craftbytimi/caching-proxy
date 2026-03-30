@@ -36,6 +36,8 @@ go.sum
 
 # Ignore build output
 build/
+proxy
+caching-proxy
 
 # Ignore environment files
 .env

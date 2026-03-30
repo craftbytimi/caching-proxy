@@ -1,11 +1,6 @@
 package proxy
 
-import (
-	"net/http"
-	"net/http/httptest"
-	"testing"
-	"time"
-)
+import "testing"
 
 func TestService_CacheHitMiss(t *testing.T) {
 	// TODO: Implement integration test

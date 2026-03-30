@@ -1,13 +1,6 @@
 package redis
 
-import (
-	"context"
-	"testing"
-	"time"
-
-	"github.com/craftbytimi/caching-proxy/internal/model"
-	"github.com/craftbytimi/caching-proxy/internal/store"
-)
+import "testing"
 
 func TestStore_GetSetDelete(t *testing.T) {
 	// TODO: Implement test with miniredis or real Redis

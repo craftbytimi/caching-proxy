@@ -99,6 +99,7 @@ func (s *Service) forwardRequest(ctx context.Context, w http.ResponseWriter, r *
 	defer resp.Body.Close()
 
 	// Copy response
+	upstream.CleanResponseHeaders(resp.Header)
 	w.Header().Set("X-Cache", string(status))
 	copyHeaders(w.Header(), resp.Header)
 	w.WriteHeader(resp.StatusCode)
@@ -122,6 +123,9 @@ func (s *Service) forwardAndCache(ctx context.Context, w http.ResponseWriter, r 
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
+
+	resp.ContentLength = int64(len(body))
+	upstream.CleanResponseHeaders(resp.Header)
 
 	// Check if response should be cached
 	if s.policy.ShouldStore(r, resp) {

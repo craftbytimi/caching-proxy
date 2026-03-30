@@ -1,7 +1,6 @@
 package integration
 
 import (
-	"context"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -25,7 +24,10 @@ func TestProxyIntegration_CacheHitMiss(t *testing.T) {
 
 	// Setup proxy components
 	store := memory.New()
-	upstreamClient := upstream.NewHTTPClient(upstreamServer.URL[7:], 5*time.Second)
+	upstreamClient, err := upstream.NewHTTPClient(upstreamServer.URL, 5*time.Second)
+	if err != nil {
+		t.Fatalf("NewHTTPClient failed: %v", err)
+	}
 	policy := cache.NewSimplePolicy(10 * 1024 * 1024)
 	keyGen := cache.NewSimpleKeyGenerator(true)
 	logger := observability.NewLogger("info")
@@ -66,7 +68,10 @@ func TestProxyIntegration_NonCacheableMethod(t *testing.T) {
 	defer upstreamServer.Close()
 
 	store := memory.New()
-	upstreamClient := upstream.NewHTTPClient(upstreamServer.URL[7:], 5*time.Second)
+	upstreamClient, err := upstream.NewHTTPClient(upstreamServer.URL, 5*time.Second)
+	if err != nil {
+		t.Fatalf("NewHTTPClient failed: %v", err)
+	}
 	policy := cache.NewSimplePolicy(10 * 1024 * 1024)
 	keyGen := cache.NewSimpleKeyGenerator(true)
 	logger := observability.NewLogger("info")
@@ -91,7 +96,10 @@ func TestProxyIntegration_TTLExpiration(t *testing.T) {
 	defer upstreamServer.Close()
 
 	store := memory.New()
-	upstreamClient := upstream.NewHTTPClient(upstreamServer.URL[7:], 5*time.Second)
+	upstreamClient, err := upstream.NewHTTPClient(upstreamServer.URL, 5*time.Second)
+	if err != nil {
+		t.Fatalf("NewHTTPClient failed: %v", err)
+	}
 	policy := cache.NewSimplePolicy(10 * 1024 * 1024)
 	keyGen := cache.NewSimpleKeyGenerator(true)
 	logger := observability.NewLogger("info")

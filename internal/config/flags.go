@@ -10,15 +10,15 @@ import (
 // ParseFlags parses command-line flags and merges with config
 func ParseFlags() (*Config, error) {
 	var (
-		port             = flag.String("port", "", "HTTP server port")
-		upstreamURL      = flag.String("upstream", "", "Upstream server URL")
-		ttl              = flag.Int("ttl", 0, "Cache TTL in seconds")
-		redisAddr        = flag.String("redis", "", "Redis address")
-		redisDB          = flag.Int("redis-db", 0, "Redis database number")
-		redisPassword    = flag.String("redis-password", "", "Redis password")
-		maxBodySize      = flag.Int("max-body", 0, "Max cacheable body size in MB")
-		upstreamTimeout  = flag.Int("timeout", 0, "Upstream timeout in seconds")
-		logLevel         = flag.String("log-level", "", "Log level (debug|info|warn|error)")
+		port            = flag.String("port", "", "HTTP server port")
+		upstreamURL     = flag.String("upstream", "", "Upstream server URL")
+		ttl             = flag.Int("ttl", 0, "Cache TTL in seconds")
+		redisAddr       = flag.String("redis", "", "Redis address")
+		redisDB         = flag.Int("redis-db", 0, "Redis database number")
+		redisPassword   = flag.String("redis-password", "", "Redis password")
+		maxBodySize     = flag.Int("max-body", 0, "Max cacheable body size in MB")
+		upstreamTimeout = flag.Int("timeout", 0, "Upstream timeout in seconds")
+		logLevel        = flag.String("log-level", "", "Log level (debug|info|warn|error)")
 	)
 
 	flag.Parse()
@@ -74,8 +74,12 @@ func (c *Config) Validate() error {
 	}
 
 	// Validate upstream URL format
-	if _, err := url.Parse(c.UpstreamURL); err != nil {
+	parsedURL, err := url.Parse(c.UpstreamURL)
+	if err != nil {
 		return fmt.Errorf("invalid upstream URL: %w", err)
+	}
+	if parsedURL.Scheme == "" || parsedURL.Host == "" {
+		return fmt.Errorf("upstream URL must include scheme and host")
 	}
 
 	if c.TTL <= 0 {
